@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dar Zitoun — Haute cuisine marocaine à Marrakech</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+@property --a{syntax:'<angle>';initial-value:0deg;inherits:false}
+:root{--ink:#0B0B0F;--ink2:#14141a;--gold:#D8B46A;--gold2:#f0d9a0;--bord:#5A1226;--ivory:#F5EEDC;--mute:#b8b09b;--ease:cubic-bezier(.22,1,.36,1)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:var(--ink);color:var(--ivory);font-family:'Jost',system-ui,sans-serif;font-weight:300;line-height:1.75;overflow-x:hidden}
+h1,h2,h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:300;margin:0;line-height:1.05}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+.glow{position:fixed;inset:0;pointer-events:none;z-index:1;background:radial-gradient(420px circle at var(--mx,50%) var(--my,30%),rgba(216,180,106,.10),transparent 60%)}
+#bar{position:fixed;top:0;left:0;height:2px;width:100%;background:linear-gradient(90deg,var(--bord),var(--gold),var(--gold2));transform:scaleX(0);transform-origin:left;z-index:60}
+
+/* preloader */
+#pre{position:fixed;inset:0;background:var(--ink);z-index:100;display:grid;place-items:center;transition:opacity .9s var(--ease) .2s,visibility 0s 1.2s}
+#pre svg{width:120px;height:120px}
+#pre p{font-family:'Cormorant Garamond',serif;letter-spacing:.5em;color:var(--gold);margin:18px 0 0;text-align:center;font-size:1.1rem;animation:fade 1.2s .6s both}
+.ready #pre{opacity:0;visibility:hidden}
+.draw *{fill:none;stroke:var(--gold);stroke-width:1;stroke-dasharray:1;stroke-dashoffset:1;animation:dr 2.2s var(--ease) forwards}
+.draw *:nth-child(2){animation-delay:.25s}.draw *:nth-child(3){animation-delay:.5s}
+@keyframes dr{to{stroke-dashoffset:0}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+/* header */
+header{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:calc(26px + env(safe-area-inset-top,0px)) 5vw 26px;transition:padding .5s var(--ease),background .5s,backdrop-filter .5s}
+header.s{padding-top:calc(14px + env(safe-area-inset-top,0px));padding-bottom:14px;background:rgba(11,11,15,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(216,180,106,.18)}
+.logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;color:var(--gold)}
+nav{display:flex;gap:34px;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase}
+nav a{text-decoration:none;position:relative;padding:4px 0}
+nav a::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;background:var(--gold);transform:scaleX(0);transform-origin:right;transition:transform .6s var(--ease)}
+nav a:hover::after{transform:scaleX(1);transform-origin:left}
+
+/* hero */
+.hero{position:relative;min-height:100svh;display:grid;place-items:center;text-align:center;padding:130px 6vw 90px;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#1b0c13 0%,var(--ink) 70%)}
+#fx{position:absolute;inset:0;width:100%;height:100%}
+.star{position:absolute;width:min(92vw,760px);aspect-ratio:1;left:50%;top:50%;margin:calc(min(92vw,760px)/-2) 0 0 calc(min(92vw,760px)/-2);opacity:.55;will-change:transform}
+.star svg{width:100%;height:100%;animation:spin 90s linear infinite}
+.star .draw *{stroke-opacity:.55;stroke-width:.5;animation-duration:3.5s;animation-delay:1.4s}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero-in{position:relative;z-index:2;max-width:900px}
+.kick{color:var(--gold);letter-spacing:.42em;font-size:.72rem;text-transform:uppercase;margin:0 0 30px;opacity:0;transform:translateY(14px);transition:all 1.2s var(--ease) 1.4s}
+.hero h1{font-size:clamp(3.6rem,13vw,9.5rem);letter-spacing:.04em}
+.ch{display:inline-block;opacity:0;transform:translateY(70%) rotateX(-70deg);filter:blur(10px);transition:all 1.3s var(--ease);transition-delay:calc(1.2s + var(--i)*70ms)}
+.ready .ch,.ready .kick,.ready .sub,.ready .cta{opacity:1;transform:none;filter:none}
+.sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.2rem,3vw,1.8rem);color:var(--gold2);margin:14px 0 0;opacity:0;transform:translateY(14px);transition:all 1.2s var(--ease) 2.2s}
+.cta{margin-top:46px;opacity:0;transform:translateY(14px);transition:all 1.2s var(--ease) 2.6s}
+.btn{position:relative;display:inline-block;padding:17px 46px;color:var(--ink);background:var(--gold);text-decoration:none;font-size:.78rem;letter-spacing:.26em;text-transform:uppercase;font-weight:500;overflow:hidden;border:0;cursor:pointer;font-family:inherit;transition:transform .5s var(--ease),box-shadow .5s}
+.btn::after{content:"";position:absolute;top:0;left:-80%;width:50%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.65),transparent);transform:skewX(-20deg);transition:left .9s var(--ease)}
+.btn:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(216,180,106,.28)}
+.btn:hover::after{left:140%}
+.scroll{position:absolute;bottom:28px;left:50%;width:1px;height:60px;background:linear-gradient(var(--gold),transparent);z-index:2;animation:drip 2.2s ease-in-out infinite;transform-origin:top}
+@keyframes drip{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+
+/* marquee */
+.mq{border-block:1px solid rgba(216,180,106,.25);overflow:hidden;white-space:nowrap;padding:22px 0;background:var(--ink2)}
+.mq div{display:inline-block;animation:mq 36s linear infinite;font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-style:italic;color:var(--gold);letter-spacing:.06em}
+.mq span{margin:0 28px;color:var(--bord);font-style:normal}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+section{position:relative;z-index:2;padding:130px 6vw}
+.wrap{max-width:1100px;margin:auto}
+.lbl{color:var(--gold);letter-spacing:.4em;font-size:.72rem;text-transform:uppercase;margin:0 0 22px;display:flex;align-items:center;gap:18px}
+.lbl::before{content:"";height:1px;width:0;background:var(--gold);transition:width 1.4s var(--ease)}
+.in .lbl::before,.lbl.in::before{width:60px}
+h2{font-size:clamp(2.4rem,6vw,4.6rem)}
+h2 em{color:var(--gold2)}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(46px);transition:opacity 1.2s var(--ease),transform 1.2s var(--ease);transition-delay:var(--d,0s)}
+.rv.in{opacity:1;transform:none}
+.rv.l{transform:translateX(-60px)}.rv.r{transform:translateX(60px)}.rv.in.l,.rv.in.r{transform:none}
+
+.story{display:grid;grid-template-columns:1.1fr 1fr;gap:7vw;align-items:center}
+.story p{color:var(--mute);margin:26px 0 0;max-width:500px}
+.stats{display:grid;gap:0}
+.stat{padding:30px 0;border-bottom:1px solid rgba(216,180,106,.22);display:flex;align-items:baseline;gap:22px}
+.stat:first-child{border-top:1px solid rgba(216,180,106,.22)}
+.stat b{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:4rem;color:var(--gold);line-height:1;min-width:150px}
+.stat span{letter-spacing:.16em;text-transform:uppercase;font-size:.75rem;color:var(--mute)}
+
+/* dishes */
+.dishes{background:linear-gradient(var(--ink),#12060b 50%,var(--ink))}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:26px;margin-top:70px;perspective:1100px}
+.card{position:relative;padding:44px 40px;background:linear-gradient(145deg,rgba(90,18,38,.55),rgba(20,20,26,.9));border:1px solid rgba(216,180,106,.22);overflow:hidden;transform-style:preserve-3d;transition:transform .5s var(--ease),border-color .5s,opacity 1.2s var(--ease)}
+.card::before{content:"";position:absolute;inset:0;background:radial-gradient(300px circle at var(--px,50%) var(--py,0%),rgba(216,180,106,.16),transparent 65%);opacity:0;transition:opacity .5s}
+.card:hover{border-color:rgba(216,180,106,.7)}
+.card:hover::before{opacity:1}
+.card i{font-family:'Cormorant Garamond',serif;font-style:normal;font-size:5.5rem;color:rgba(216,180,106,.18);position:absolute;right:26px;top:6px;line-height:1}
+.card h3{font-size:2rem;margin-bottom:10px;position:relative}
+.card p{margin:0;color:var(--mute);font-size:.95rem;position:relative}
+.card em{display:block;margin-top:22px;color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-style:normal;position:relative}
+
+.tools{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-end;justify-content:space-between;margin-top:56px}
+.tabs{display:flex;flex-wrap:wrap;gap:10px}
+.tab{font:inherit;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ivory);background:transparent;border:1px solid rgba(216,180,106,.35);padding:11px 20px;cursor:pointer;transition:background .4s var(--ease),color .4s,border-color .4s}
+.tab:hover{border-color:var(--gold)}
+.tab[aria-pressed=true]{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.tab small{opacity:.65;margin-left:6px;font-size:.9em}
+.srch{font:inherit;color:var(--ivory);background:transparent;border:0;border-bottom:1px solid rgba(216,180,106,.35);padding:10px 2px;min-width:240px;border-radius:0;transition:border-color .4s}
+.srch:focus{outline:0;border-color:var(--gold)}
+.srch::placeholder{color:var(--mute)}
+.grid.m{grid-template-columns:repeat(3,1fr);margin-top:36px}
+.grid.m .card{padding:30px 30px 34px}
+.grid.m .card h3{font-size:1.65rem;margin-bottom:8px}
+.card .art{height:130px;margin-bottom:18px}
+.card .art svg{width:100%;height:100%;transition:transform .8s var(--ease)}
+.card:hover .art svg{transform:scale(1.08) rotate(-3deg)}
+.card .cat{display:block;font-size:.64rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;position:relative}
+.card.pop{animation:pop .9s var(--ease) both;animation-delay:var(--d,0s)}
+@keyframes pop{from{opacity:0;transform:translateY(34px) scale(.95)}to{opacity:1;transform:none}}
+#none{text-align:center;color:var(--mute);font-style:italic;margin:50px 0 0}
+@media(max-width:1000px){.grid.m{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.grid.m{grid-template-columns:1fr}.srch{width:100%}}
+/* tasting */
+.tast{position:relative;margin-top:26px;padding:70px 6vw;text-align:center;background:var(--ink2);isolation:isolate}
+.tast::before{content:"";position:absolute;inset:0;padding:1px;background:conic-gradient(from var(--a),transparent 0 70%,var(--gold) 85%,transparent);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:rot 6s linear infinite;z-index:-1}
+@keyframes rot{to{--a:360deg}}
+.tast h3{font-size:clamp(2rem,4.5vw,3.2rem);color:var(--gold2)}
+.tast p{max-width:560px;margin:18px auto 0;color:var(--mute)}
+
+/* book */
+.book{display:grid;grid-template-columns:1fr 1fr;gap:7vw}
+.info p{color:var(--mute);margin:0 0 20px}
+.info b{display:block;color:var(--gold);font-weight:400;letter-spacing:.22em;text-transform:uppercase;font-size:.72rem}
+.f{display:grid;gap:26px}
+.f label{display:block;position:relative}
+.f input,.f select{width:100%;font:inherit;color:var(--ivory);background:transparent;border:0;border-bottom:1px solid rgba(216,180,106,.35);padding:20px 2px 8px;border-radius:0;transition:border-color .4s}
+.f select option{color:#0B0B0F}
+.f input:focus,.f select:focus{outline:0;border-color:var(--gold)}
+.f label span{position:absolute;left:2px;top:6px;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.f .r{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+#ok{margin:0;color:var(--gold2);min-height:1.7em;font-style:italic}
+#ok.err{color:#e8836f}
+.f [aria-invalid=true]{border-color:#e8836f}
+.md{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:6vw;background:rgba(5,5,8,.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:fade .4s both}
+.md[hidden]{display:none}
+.mb{max-width:440px;width:100%;padding:48px 36px;text-align:center;background:var(--ink2);border:1px solid var(--gold);box-shadow:0 30px 90px rgba(0,0,0,.6);animation:pop .7s var(--ease) both}
+.mb h3{font-size:2.2rem;color:var(--gold2);margin-bottom:14px}
+.mb p{color:var(--mute);margin:0 0 30px}
+footer{position:relative;z-index:2;padding:60px 6vw calc(50px + env(safe-area-inset-bottom,0px));text-align:center;border-top:1px solid rgba(216,180,106,.2);color:var(--mute);font-size:.85rem}
+footer b{display:block;font-family:'Cormorant Garamond',serif;font-weight:300;font-size:2rem;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:8px}
+
+@media(max-width:800px){
+  nav a:not(:last-child){display:none}
+  .story,.book,.grid{grid-template-columns:1fr}
+  section{padding:90px 6vw}
+  .stat b{font-size:3rem;min-width:110px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<div class="glow" aria-hidden="true"></div>
+<div id="bar"></div>
+
+<div id="pre" aria-hidden="true">
+  <div>
+    <svg viewBox="0 0 100 100" class="draw"><rect x="20" y="20" width="60" height="60" pathLength="1"/><rect x="20" y="20" width="60" height="60" transform="rotate(45 50 50)" pathLength="1"/><circle cx="50" cy="50" r="14" pathLength="1"/></svg>
+    <p>DAR ZITOUN</p>
+  </div>
+</div>
+
+<header id="hd">
+  <a class="logo" href="#top">Dar Zitoun</a>
+  <nav><a href="#histoire">Maison</a><a href="#carte">Carte</a><a href="#reserver">Réserver</a></nav>
+</header>
+
+<main id="top">
+<div class="hero">
+  <canvas id="fx" aria-hidden="true"></canvas>
+  <div class="star" id="star" aria-hidden="true">
+    <svg viewBox="0 0 100 100" class="draw"><rect x="18" y="18" width="64" height="64" pathLength="1"/><rect x="18" y="18" width="64" height="64" transform="rotate(45 50 50)" pathLength="1"/><circle cx="50" cy="50" r="30" pathLength="1"/></svg>
+  </div>
+  <div class="hero-in">
+    <p class="kick">Médina de Marrakech · Depuis 2009</p>
+    <h1 data-split>Dar Zitoun</h1>
+    <p class="sub">La haute cuisine marocaine, à la lumière des bougies</p>
+    <div class="cta"><a class="btn" href="#reserver">Réserver une table</a></div>
+  </div>
+  <div class="scroll" aria-hidden="true"></div>
+</div>
+
+<div class="mq" aria-hidden="true"><div id="mq"></div></div>
+
+<section id="histoire">
+  <div class="wrap story">
+    <div>
+      <p class="lbl rv">Notre maison</p>
+      <h2 class="rv" style="--d:.1s">Un riad, un feu de bois, <em>le temps</em></h2>
+      <p class="rv" style="--d:.2s">Derrière une porte en cèdre, un patio de zellige, un bassin d’eau de rose et un oranger centenaire. Ici, l’agneau de l’Atlas confit pendant sept heures et le safran de Taliouine rencontrent la précision d’un chef formé entre Fès et Paris.</p>
+    </div>
+    <div class="stats">
+      <div class="stat rv r"><b data-count="2009">0</b><span>Année d’ouverture</span></div>
+      <div class="stat rv r" style="--d:.15s"><b data-count="60">0</b><span>Couverts par soir</span></div>
+      <div class="stat rv r" style="--d:.3s"><b data-count="7">0</b><span>Services du menu dégustation</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="dishes" id="carte">
+  <div class="wrap">
+    <p class="lbl rv">La carte</p>
+    <h2 class="rv" style="--d:.1s">Notre <em>carte</em></h2>
+    <div class="tools rv"><div class="tabs" id="tabs" role="group" aria-label="Catégories"></div><input class="srch" id="q" type="search" placeholder="Rechercher un plat…" aria-label="Rechercher un plat"></div>
+    <div class="grid m" id="grid"></div>
+    <p id="none" hidden>Aucun plat ne correspond à votre recherche.</p>
+    <div class="tast rv">
+      <h3>Menu dégustation · 7 services</h3>
+      <p>Le voyage complet de la cuisine du chef, avec une sélection de vins du Maroc. 1 200 MAD par personne, sur réservation 48 h à l’avance.</p>
+    </div>
+  </div>
+</section>
+
+<section id="reserver">
+  <div class="wrap book">
+    <div class="info">
+      <p class="lbl rv">Réservation</p>
+      <h2 class="rv" style="--d:.1s">Votre table <em>vous attend</em></h2>
+      <p class="rv" style="margin-top:30px;--d:.2s"><b>Adresse</b>Derb Sidi Ishak, Médina, Marrakech</p>
+      <p class="rv" style="--d:.28s"><b>Horaires</b>Du mardi au dimanche, 19 h – 23 h 30</p>
+      <p class="rv" style="--d:.36s"><b>Contact</b>+212 5 24 00 00 00 · table@darzitoun.example</p>
+    </div>
+    <div class="f rv" style="--d:.2s">
+      <label><span>Nom complet *</span><input id="n" type="text" autocomplete="name" required aria-required="true"></label>
+      <label><span>Numéro de téléphone *</span><input id="t" type="tel" autocomplete="tel" inputmode="tel" placeholder="+212 6 00 00 00 00" maxlength="18" pattern="\+212 [67] \d\d \d\d \d\d \d\d" required aria-required="true"></label>
+      <div class="r">
+        <label><span>Date *</span><input id="d" type="date" required aria-required="true"></label>
+        <label><span>Heure *</span><select id="h" required aria-required="true"><option value="" selected disabled>Choisir</option><option>19:30</option><option>20:00</option><option>20:30</option><option>21:00</option><option>21:30</option></select></label>
+      </div>
+      <label><span>Convives *</span><select id="p" required aria-required="true"><option value="" selected disabled>Choisir</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7 et plus</option></select></label>
+      <div><button class="btn" type="button" id="go">Demander une table</button></div>
+      <p id="ok" role="status"></p>
+    </div>
+  </div>
+</section>
+</main>
+
+<div id="md" class="md" hidden><div class="mb" role="alertdialog" aria-modal="true" aria-labelledby="mt" aria-describedby="mx"><h3 id="mt">Demande enregistrée</h3><p id="mx"></p><button class="btn" type="button" id="mo">OK</button></div></div>
+
+<footer><b>Dar Zitoun</b>Derb Sidi Ishak, Médina de Marrakech · © 2026</footer>
+
+<script>
+(function(){
+var rm=matchMedia('(prefers-reduced-motion:reduce)').matches,$=function(s){return document.querySelector(s)};
+/* preloader */
+function go(){setTimeout(function(){document.body.classList.add('ready')},rm?0:1900)}
+if(document.readyState==='complete')go();else addEventListener('load',go);
+/* split title */
+var h=$('[data-split]'),t=h.textContent;h.setAttribute('aria-label',t);h.textContent='';
+t.split('').forEach(function(c,i){var s=document.createElement('span');s.className='ch';s.setAttribute('aria-hidden','true');s.style.setProperty('--i',i);s.innerHTML=c===' '?'&nbsp;':c;h.appendChild(s)});
+/* marquee */
+var w=['Pastilla de pigeon','Mechoui d’agneau','Couscous royal','Safran de Taliouine','Loup de mer chermoula','Thé à la menthe'],m='';
+for(var k=0;k<4;k++)w.forEach(function(x){m+=x+'<span>✦</span>'});$('#mq').innerHTML=m;
+/* reveal + counters */
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;e.target.classList.add('in');
+  var c=e.target.querySelector('[data-count]');if(c)count(c);io.unobserve(e.target)})},{threshold:.18});
+document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+function count(el){var to=+el.dataset.count,st=null,d=1800;if(rm){el.textContent=to;return}
+  (function f(ts){st=st||ts;var p=Math.min((ts-st)/d,1);el.textContent=Math.round(to*(1-Math.pow(1-p,4)));if(p<1)requestAnimationFrame(f)})(performance.now())}
+/* scroll */
+var hd=$('#hd'),bar=$('#bar'),star=$('#star');
+function sc(){var y=scrollY,hh=document.documentElement.scrollHeight-innerHeight;
+  hd.classList.toggle('s',y>60);bar.style.transform='scaleX('+(hh>0?y/hh:0)+')';
+  if(!rm&&y<innerHeight*1.2)star.style.transform='translateY('+(y*.25)+'px) scale('+(1+y/3000)+')'}
+addEventListener('scroll',sc,{passive:true});sc();
+/* cursor glow + tilt */
+if(matchMedia('(pointer:fine)').matches&&!rm){
+  var g=$('.glow');addEventListener('pointermove',function(e){g.style.setProperty('--mx',e.clientX+'px');g.style.setProperty('--my',e.clientY+'px')});
+  document.querySelectorAll('[data-tilt]').forEach(function(c){
+    c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+      c.style.transform='rotateY('+((x-.5)*10)+'deg) rotateX('+((.5-y)*10)+'deg) translateZ(0)';c.style.setProperty('--px',x*100+'%');c.style.setProperty('--py',y*100+'%')});
+    c.addEventListener('pointerleave',function(){c.style.transform=''})})}
+/* gold particles */
+var cv=$('#fx'),cx=cv.getContext('2d'),P=[],W,H;
+function rs(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight}
+function mk(){return{x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.6+.4,v:Math.random()*.35+.1,a:Math.random()*.6+.2,p:Math.random()*6}}
+rs();addEventListener('resize',rs);for(var i=0;i<70;i++)P.push(mk());
+(function loop(){cx.clearRect(0,0,W,H);P.forEach(function(p){p.y-=p.v;p.p+=.02;p.x+=Math.sin(p.p)*.25;if(p.y<-5){p.y=H+5;p.x=Math.random()*W}
+  cx.globalAlpha=p.a*(.6+.4*Math.sin(p.p*2));cx.fillStyle='#D8B46A';cx.beginPath();cx.arc(p.x,p.y,p.r,0,6.283);cx.fill()});
+  if(!rm)requestAnimationFrame(loop)})();
+/* menu */
+var G='#D8B46A',I='#F5EEDC';
+function art(m,k){var s={
+pie:'<circle cx="60" cy="46" r="23" fill="'+(k||'#9a6a2c')+'" stroke="'+G+'"/><path d="M42 36l36 20M42 56l36-20M60 23v46" stroke="'+I+'" stroke-opacity=".55"/>',
+bowl:'<path d="M34 42h52a26 24 0 0 1-52 0z" fill="'+(k||'#7a2a2a')+'" stroke="'+G+'"/><circle cx="52" cy="40" r="3" fill="#6f9a4a"/><circle cx="64" cy="38" r="2.5" fill="#d98a3a"/><circle cx="72" cy="41" r="2" fill="#6f9a4a"/>',
+lamb:'<ellipse cx="60" cy="48" rx="28" ry="15" fill="#7a4420" stroke="'+G+'"/><path d="M84 40l14-8m-14 18l14 6" stroke="'+I+'" stroke-width="3" stroke-linecap="round"/><circle cx="48" cy="44" r="2" fill="#6f9a4a"/><circle cx="62" cy="50" r="2" fill="#6f9a4a"/><circle cx="72" cy="44" r="2" fill="#6f9a4a"/>',
+tajine:'<path d="M30 58h60l-5-6H35z" fill="#7a2a2a" stroke="'+G+'"/><path d="M40 52L60 18l20 34z" fill="#a8582e" stroke="'+G+'"/><circle cx="60" cy="16" r="3" fill="'+G+'"/>',
+couscous:'<path d="M28 60Q60 8 92 60z" fill="#e4bd62" stroke="'+G+'"/><circle cx="50" cy="52" r="4" fill="#d9822b"/><circle cx="64" cy="46" r="4" fill="#6f9a4a"/><circle cx="74" cy="54" r="4" fill="#d9822b"/><circle cx="58" cy="58" r="3" fill="#f4eede"/>',
+fish:'<ellipse cx="56" cy="46" rx="28" ry="13" fill="#b9c3c9" stroke="'+G+'"/><path d="M84 46l16-11v22z" fill="#b9c3c9" stroke="'+G+'"/><circle cx="40" cy="43" r="2" fill="#0B0B0F"/><circle cx="46" cy="64" r="7" fill="#e8c840"/>',
+dates:'<ellipse cx="46" cy="50" rx="14" ry="8" fill="#5a2e14" stroke="'+G+'"/><ellipse cx="72" cy="44" rx="14" ry="8" fill="#5a2e14" stroke="'+G+'"/><ellipse cx="66" cy="60" rx="14" ry="8" fill="#5a2e14" stroke="'+G+'"/><path d="M40 50h12M66 44h12M60 60h12" stroke="'+I+'" stroke-width="2.5" stroke-linecap="round"/>',
+glass:'<path d="M46 20h28l-4 44H50z" fill="'+(k||'#6f9a4a')+'" fill-opacity=".65" stroke="'+G+'"/><path d="M60 22l-8-10m8 10l8-12" stroke="#6f9a4a" stroke-width="3" stroke-linecap="round"/>'}[m];
+return '<svg viewBox="0 0 120 92" aria-hidden="true"><circle cx="60" cy="46" r="42" fill="none" stroke="'+G+'" stroke-opacity=".3"/><circle cx="60" cy="46" r="35" fill="none" stroke="'+G+'" stroke-opacity=".15"/>'+s+'</svg>'}
+var D=[
+['Entrées','Pastilla de pigeon','Feuille croustillante, amandes, cannelle et sucre glace.',180,'pie'],
+['Entrées','Zaalouk d’aubergines fumées','Tomate confite, cumin, huile d’olive de Tyout.',120,'bowl','#5a2e3a'],
+['Entrées','Velouté de harira royale','Agneau, pois chiches, dattes de Zagora.',110,'bowl','#b8662a'],
+['Plats principaux','Mechoui d’agneau','Épaule confite sept heures, cumin, pain du four.',340,'lamb'],
+['Plats principaux','Tajine de poulet beldi','Citron confit, olives violettes, oignons caramélisés.',260,'tajine'],
+['Plats principaux','Couscous royal','Semoule roulée à la main, sept légumes, bouillon de safran.',290,'couscous'],
+['Plats principaux','Loup de mer chermoula','Pêche d’Essaouira, pommes de terre fondantes.',320,'fish'],
+['Desserts','Pastilla au lait, fleur d’oranger','Crème légère, pistaches, miel de thym.',110,'pie','#e6cfa0'],
+['Desserts','Dattes Majhoul farcies','Amandes, glace à la cardamome.',95,'dates'],
+['Boissons','Thé à la menthe, service rituel','Thé gunpowder, menthe nanah de la médina.',60,'glass'],
+['Boissons','Jus d’orange sanguine pressé','Pressé minute, servi glacé.',55,'glass','#c23a1a']];
+var C=['Tous','Entrées','Plats principaux','Desserts','Boissons'],gr=$('#grid'),qs='',ct='Tous',tb=$('#tabs');
+function nz(s){return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()}
+C.forEach(function(c){var b=document.createElement('button'),n=c==='Tous'?D.length:D.filter(function(d){return d[0]===c}).length;
+  b.className='tab';b.type='button';b.innerHTML=c+'<small>'+n+'</small>';b.setAttribute('aria-pressed',c==='Tous');
+  b.addEventListener('click',function(){ct=c;[].forEach.call(tb.children,function(x){x.setAttribute('aria-pressed',x===b)});draw()});tb.appendChild(b)});
+function draw(){var n=0,h='';D.forEach(function(d){if(ct!=='Tous'&&d[0]!==ct)return;if(qs&&nz(d[1]+' '+d[2]).indexOf(qs)<0)return;
+  h+='<article class="card pop" style="--d:'+(n++*.07)+'s"><div class="art">'+art(d[4],d[5])+'</div><span class="cat">'+d[0]+'</span><h3>'+d[1]+'</h3><p>'+d[2]+'</p><em>'+d[3]+' MAD</em></article>'});
+  gr.innerHTML=h;$('#none').hidden=n>0}
+$('#q').addEventListener('input',function(e){qs=nz(e.target.value.trim());draw()});draw();
+if(matchMedia('(pointer:fine)').matches&&!rm){
+  gr.addEventListener('pointermove',function(e){var c=e.target.closest('.card');if(!c)return;var r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+    c.style.transform='rotateY('+((x-.5)*8)+'deg) rotateX('+((.5-y)*8)+'deg)';c.style.setProperty('--px',x*100+'%');c.style.setProperty('--py',y*100+'%')});
+  gr.addEventListener('pointerout',function(e){var c=e.target.closest('.card');if(c)c.style.transform=''})}
+/* form */
+var T=$('#t'),dt=$('#d'),MD=$('#md'),RX=/^\+212 [67] \d\d \d\d \d\d \d\d$/;
+dt.min=new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
+T.addEventListener('input',function(){var v=T.value.replace(/\D/g,'');
+  if(v.indexOf('212')===0)v=v.slice(3);else if(v.length<3&&'212'.indexOf(v)===0)v='';else if(v[0]==='0')v=v.slice(1);
+  v=v.slice(0,9);var o='';if(v.length){o='+212 '+v[0];for(var i=1;i<v.length;i+=2)o+=' '+v.slice(i,i+2)}T.value=o});
+function bad(el,m){var o=$('#ok');el.setAttribute('aria-invalid','true');o.className='err';o.textContent=m;el.focus()}
+function shut(){MD.hidden=true;['#n','#t','#d'].forEach(function(s){$(s).value=''});$('#h').selectedIndex=0;$('#p').selectedIndex=0;$('#go').focus()}
+$('#go').addEventListener('click',function(){
+  var F=[['#n','Le nom complet est obligatoire.'],['#t','Le numéro de téléphone est obligatoire.'],['#d','La date est obligatoire.'],['#h','Choisissez une heure.'],['#p','Choisissez le nombre de convives.']];
+  document.querySelectorAll('.f [aria-invalid]').forEach(function(x){x.removeAttribute('aria-invalid')});
+  for(var i=0;i<F.length;i++){var el=$(F[i][0]);if(!el.value.trim())return bad(el,F[i][1])}
+  if(!RX.test(T.value))return bad(T,'Format du numéro : +212 6 00 00 00 00');
+  if(dt.value<dt.min)return bad(dt,'Choisissez une date à partir d’aujourd’hui.');
+  $('#ok').className='';$('#ok').textContent='';
+  var msg='Merci '+$('#n').value.trim()+'. Votre table ('+$('#p').value+' convives) le '+dt.value.split('-').reverse().join('/')+' à '+$('#h').value+' est enregistrée. Nous vous appellerons au '+T.value+' pour la confirmer sous 24 h.',btn=$('#go');
+  btn.disabled=true;
+  fetch('/api/reservations',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:$('#n').value.trim(),phone:T.value,date:dt.value,time:$('#h').value,guests:$('#p').value})})
+  .then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||'Erreur serveur');return j})})
+  .then(function(){$('#mx').textContent=msg;MD.hidden=false;$('#mo').focus()})
+  .catch(function(e){var o=$('#ok');o.className='err';o.textContent=(e instanceof TypeError)?'Connexion impossible. Réessayez ou appelez-nous.':e.message})
+  .then(function(){btn.disabled=false})});
+$('#mo').addEventListener('click',shut);
+MD.addEventListener('click',function(e){if(e.target===MD)shut()});
+addEventListener('keydown',function(e){if(e.key==='Escape'&&!MD.hidden)shut()});
+})();
+</script>
+</body>
+</html>
